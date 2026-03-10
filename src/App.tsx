@@ -483,12 +483,12 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
           method="POST"
           className="relative rounded-[1.75rem] border border-stone-200 bg-stone-50 p-8 shadow-sm"
         >
-          <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
-            <label htmlFor="company">Company</label>
+          <div style={{ display: "none" }}>
+            <label htmlFor="_gotcha">Leave this field empty</label>
             <input
               type="text"
-              name="company"
-              id="company"
+              name="_gotcha"
+              id="_gotcha"
               tabIndex={-1}
               autoComplete="off"
             />
@@ -586,7 +586,7 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="min-h-[140px] w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
-              placeholder="Briefly describe the project, where things stand today, and what kind of support you are looking for."
+              placeholder="Tell us about your project, where it stands today, and what kind of support you’re looking for."
               required
             />
           </div>
