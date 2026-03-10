@@ -456,20 +456,16 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
     setFormData((prev) => ({ ...prev, stream: defaultStream }));
   }, [defaultStream]);
 
-  const handleSubmit = () => {
-    const subject = encodeURIComponent(`Baseline Project Inquiry - ${formData.stream}`);
-    const body = encodeURIComponent(
-      `Full Name: ${formData.fullName}\nEmail: ${formData.email}\nPhone Number: ${formData.phone}\nProject Stream: ${formData.stream}\nEstimated Budget: ${formData.budget}\nExpected Timeline: ${formData.timeline}\n\nProject Description:\n${formData.description}`
-    );
-    window.location.href = `mailto:info@baselinegroup.ca?subject=${subject}&body=${body}`;
-  };
-
   return (
     <SectionShell>
       <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">Contact</div>
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">Discuss your project.</h1>
+          <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">
+            Contact
+          </div>
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">
+            Discuss your project.
+          </h1>
           <p className="mb-8 text-lg leading-8 text-stone-700">
             Tell us a bit about your project and Baseline will help determine the right next step.
           </p>
@@ -480,44 +476,90 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
               <div><span className="font-semibold text-white">Website:</span> baselinegroup.ca</div>
             </div>
           </div>
-          <p className="mt-4 text-sm leading-6 text-stone-600">
-            The inquiry form currently opens your email app and prepares a formatted message to info@baselinegroup.ca. If you want true website form delivery later, the next step is connecting a form service such as Formspree, Resend, or a Vercel serverless form handler.
-          </p>
         </div>
 
-        <form className="rounded-[1.75rem] border border-stone-200 bg-stone-50 p-8 shadow-sm" onSubmit={(e) => e.preventDefault()}>
+        <form
+          action="https://formspree.io/f/xojkenpe"
+          method="POST"
+          className="rounded-[1.75rem] border border-stone-200 bg-stone-50 p-8 shadow-sm"
+        >
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-medium">Full Name</label>
-              <input value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0" placeholder="Your name" />
+              <input
+                type="text"
+                name="Full Name"
+                value={formData.fullName}
+                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+                placeholder="Your name"
+                required
+              />
             </div>
+
             <div>
               <label className="mb-2 block text-sm font-medium">Email Address</label>
-              <input value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0" placeholder="you@example.com" />
+              <input
+                type="email"
+                name="Email Address"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+                placeholder="you@example.com"
+                required
+              />
             </div>
+
             <div>
               <label className="mb-2 block text-sm font-medium">Phone Number</label>
-              <input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0" placeholder="902-000-0000" />
+              <input
+                type="text"
+                name="Phone Number"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+                placeholder="902-000-0000"
+              />
             </div>
+
             <div>
               <label className="mb-2 block text-sm font-medium">Project Stream</label>
-              <select value={formData.stream} onChange={(e) => setFormData({ ...formData, stream: e.target.value as ProjectStream })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0">
+              <select
+                name="Project Stream"
+                value={formData.stream}
+                onChange={(e) =>
+                  setFormData({ ...formData, stream: e.target.value as ProjectStream })
+                }
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+              >
                 <option>Residential</option>
                 <option>Commercial</option>
               </select>
             </div>
+
             <div>
               <label className="mb-2 block text-sm font-medium">Estimated Budget</label>
-              <select value={formData.budget} onChange={(e) => setFormData({ ...formData, budget: e.target.value })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0">
+              <select
+                name="Estimated Budget"
+                value={formData.budget}
+                onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+              >
                 <option>Under $100,000</option>
                 <option>$100,000 – $250,000</option>
                 <option>$250,000 – $500,000</option>
                 <option>$500,000+</option>
               </select>
             </div>
+
             <div>
               <label className="mb-2 block text-sm font-medium">Expected Timeline</label>
-              <select value={formData.timeline} onChange={(e) => setFormData({ ...formData, timeline: e.target.value })} className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0">
+              <select
+                name="Expected Timeline"
+                value={formData.timeline}
+                onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+              >
                 <option>Immediate / already underway</option>
                 <option>Within 3 months</option>
                 <option>3–6 months</option>
@@ -525,12 +567,27 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
               </select>
             </div>
           </div>
+
           <div className="mt-5">
             <label className="mb-2 block text-sm font-medium">Project Description</label>
-            <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="min-h-[140px] w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0" placeholder="Briefly describe the project, where things stand today, and what kind of support you are looking for." />
+            <textarea
+              name="Project Description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="min-h-[140px] w-full rounded-xl border border-stone-300 bg-white px-4 py-3 outline-none ring-0"
+              placeholder="Briefly describe the project, where things stand today, and what kind of support you are looking for."
+              required
+            />
           </div>
+
+          <input type="hidden" name="_subject" value="Baseline Project Inquiry" />
+          <input type="hidden" name="_replyto" value={formData.email} />
+
           <div className="mt-6">
-            <button type="button" onClick={handleSubmit} className="rounded-2xl bg-stone-900 px-6 py-3 text-sm font-medium text-white hover:bg-black">
+            <button
+              type="submit"
+              className="rounded-2xl bg-stone-900 px-6 py-3 text-sm font-medium text-white hover:bg-black"
+            >
               Submit Project Inquiry
             </button>
           </div>
