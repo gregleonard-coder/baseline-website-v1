@@ -481,8 +481,19 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
         <form
           action="https://formspree.io/f/xojkenpe"
           method="POST"
-          className="rounded-[1.75rem] border border-stone-200 bg-stone-50 p-8 shadow-sm"
+          className="relative rounded-[1.75rem] border border-stone-200 bg-stone-50 p-8 shadow-sm"
         >
+          <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
+            <label htmlFor="company">Company</label>
+            <input
+              type="text"
+              name="company"
+              id="company"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-medium">Full Name</label>
