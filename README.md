@@ -1,39 +1,18 @@
-# Baseline Website
+# Baseline Website Production Update
 
-Vercel-ready React + Vite + Tailwind project.
+This package includes the latest website updates discussed:
+- browser back button support
+- scroll to top on page navigation
+- larger logo
+- About page
+- improved Clarity Session details
+- contact page mailto-based inquiry submission
+- more complete placeholder imagery
 
-## Run locally
+## Deploy
+Replace your GitHub repo contents with these files, then redeploy in Vercel.
 
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-## Deploy to Vercel
-
-- Import the project into Vercel
-- Framework preset: Vite
-- Build command: `npm run build`
-- Output directory: `dist`
-
-## Domain
-Add:
-- `baselinegroup.ca`
-- `www.baselinegroup.ca`
-
-Then follow Vercel's DNS instructions in CanSpace.
-
-## Updating photos
-Edit:
-- `src/data.ts`
-- or any page files in `src/pages/`
-
-## Logo
-The dark-background logo is stored at:
-- `public/assets/logo-dark.png`
+## Build settings
+- Framework: Vite
+- Build command: npm run build
+- Output directory: dist
