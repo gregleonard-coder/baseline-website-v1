@@ -127,7 +127,7 @@ function HomePage({
             <div className="grid w-full max-w-2xl gap-4 md:grid-cols-[1.15fr_0.85fr]">
               <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur">
                 <img
-                  src="/images/meeting room.png?auto=format&fit=crop&w=1400&q=80"
+                  src="url('/images/meeting room.png?auto=format&fit=crop&w=1400&q=80')
                   alt="Construction planning and site oversight"
                   className="h-full min-h-[280px] w-full object-cover"
                 />
