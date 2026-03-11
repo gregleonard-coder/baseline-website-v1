@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   Building2,
@@ -9,6 +8,8 @@ import {
   MapPin,
   ShieldCheck,
   User,
+  Menu,
+  X,
 } from "lucide-react";
 
 const residentialImages = [
@@ -613,7 +614,7 @@ function BaselineLogo() {
     <img
       src="/assets/logo-dark.png"
       alt="Baseline logo"
-      className="h-28 w-auto"
+      className="h-20 w-auto md:h-28"
     />
   );
 }
@@ -624,16 +625,19 @@ export default function App() {
     return pages.includes(hash as PageKey) ? (hash as PageKey) : "home";
   });
   const [contactStream, setContactStream] = useState<ProjectStream>("Residential");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const goTo = (page: PageKey) => {
-    setActivePage(page);
-    window.history.pushState({ page }, "", `#${page}`);
+  setActivePage(page);
+  setMobileMenuOpen(false);
+  window.history.pushState({ page }, "", `#${page}`);
   };
 
   const goToContact = (stream: ProjectStream = "Residential") => {
-    setContactStream(stream);
-    setActivePage("contact");
-    window.history.pushState({ page: "contact", stream }, "", "#contact");
+  setContactStream(stream);
+  setActivePage("contact");
+  setMobileMenuOpen(false);
+  window.history.pushState({ page: "contact", stream }, "", "#contact");
   };
 
   useEffect(() => {
@@ -673,21 +677,73 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0F1E2F] text-slate-900">
-      <header className="sticky top-0 z-50 border-b border-[#1F334A] bg-[#0F1E2F]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <button onClick={() => goTo("home")} className="flex items-center gap-3 text-left">
-            <BaselineLogo />
-          </button>
-          <nav className="hidden gap-2 md:flex">
-            <NavLink label="Home" page="home" activePage={activePage} setActivePage={goTo} />
-            <NavLink label="Residential" page="residential" activePage={activePage} setActivePage={goTo} />
-            <NavLink label="Commercial" page="commercial" activePage={activePage} setActivePage={goTo} />
-            <NavLink label="Start Here" page="clarity" activePage={activePage} setActivePage={goTo} />
-            <NavLink label="About" page="about" activePage={activePage} setActivePage={goTo} />
-            <NavLink label="Contact" page="contact" activePage={activePage} setActivePage={goTo} />
-          </nav>
-        </div>
-      </header>
+     <header className="sticky top-0 z-50 border-b border-[#1F334A] bg-[#0F1E2F]/95 backdrop-blur">
+  <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <button onClick={() => goTo("home")} className="flex items-center gap-3 text-left">
+      <BaselineLogo />
+    </button>
+
+    <nav className="hidden gap-2 md:flex">
+      <NavLink label="Home" page="home" activePage={activePage} setActivePage={goTo} />
+      <NavLink label="Residential" page="residential" activePage={activePage} setActivePage={goTo} />
+      <NavLink label="Commercial" page="commercial" activePage={activePage} setActivePage={goTo} />
+      <NavLink label="Start Here" page="clarity" activePage={activePage} setActivePage={goTo} />
+      <NavLink label="About" page="about" activePage={activePage} setActivePage={goTo} />
+      <NavLink label="Contact" page="contact" activePage={activePage} setActivePage={goTo} />
+    </nav>
+
+    <button
+      className="rounded-xl border border-white/10 p-2 text-white md:hidden"
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      aria-label="Toggle menu"
+    >
+      {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+    </button>
+  </div>
+
+  {mobileMenuOpen && (
+    <div className="border-t border-[#1F334A] bg-[#0F1E2F] px-6 pb-4 pt-4 md:hidden">
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={() => goTo("home")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          Home
+        </button>
+        <button
+          onClick={() => goTo("residential")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          Residential
+        </button>
+        <button
+          onClick={() => goTo("commercial")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          Commercial
+        </button>
+        <button
+          onClick={() => goTo("clarity")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          Start Here
+        </button>
+        <button
+          onClick={() => goTo("about")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          About
+        </button>
+        <button
+          onClick={() => goTo("contact")}
+          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+        >
+          Contact
+        </button>
+      </div>
+    </div>
+  )}
+</header>
 
       <div className="border-b border-stone-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4 text-sm text-stone-500">Baseline / {pageTitle}</div>
