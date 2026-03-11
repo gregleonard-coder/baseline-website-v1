@@ -127,7 +127,7 @@ function HomePage({
             <div className="grid w-full max-w-2xl gap-4 md:grid-cols-[1.15fr_0.85fr]">
               <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur">
                 <img
-                  src="/public/images/meeting-room.png"
+                  src="/public/Images/meeting-room.png"
                   alt="Baseline Group meeting room hero"
                   className="w-full h-full object-cover"
                 />
