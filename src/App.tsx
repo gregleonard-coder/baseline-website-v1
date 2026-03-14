@@ -18,7 +18,6 @@ const siteImages = {
   logo: {
     src: "/assets/logo-dark.png",
     alt: "Baseline Group logo",
-    className="h-20 w-auto md:h-28"
   },
   hero: {
     src: "/Images/meeting-room.png",
