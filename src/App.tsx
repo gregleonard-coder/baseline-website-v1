@@ -14,20 +14,19 @@ import {
   X,
 } from "lucide-react";
 
-const siteImages: [
+const siteImages = {
   logo: {
     src: "/assets/logo-dark.png",
     alt: "Baseline Group logo",
   },
   hero: {
-    src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80"
-    alt: "Construction planning and site oversight"
+    src: "/Images/meeting-room.png",
+    alt: "Construction planning meeting",
   },
   about: {
     src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
     alt: "Professional project planning discussion",
-   },
-  ],
+  },
   residential: [
     {
       src: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
@@ -56,6 +55,7 @@ const siteImages: [
       alt: "Commercial project planning meeting",
     },
   ],
+};
 
 const pages = ["home", "residential", "commercial", "clarity", "about", "contact"] as const;
 type PageKey = (typeof pages)[number];
