@@ -29,7 +29,7 @@ const siteImages = {
   },
   residential: [
     {
-      src: "/public/Images/Blueprint.png",
+      src: "/assets/blueprint.png",
       alt: "Blueprint",
     },
     {
