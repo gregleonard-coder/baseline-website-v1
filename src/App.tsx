@@ -2,46 +2,60 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   Building2,
+  ChevronDown,
   ClipboardList,
   HardHat,
   Home,
   Image as ImageIcon,
   MapPin,
+  Menu,
   ShieldCheck,
   User,
-  Menu,
   X,
 } from "lucide-react";
 
-const residentialImages = [
-  {
-    src: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
-    alt: "Modern residential renovation interior",
+const siteImages = {
+  logo: {
+    src: "/assets/logo-dark.png",
+    alt: "Baseline Group logo",
   },
-  {
-    src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
-    alt: "Contemporary backyard suite exterior",
+  hero: {
+    src: "/Images/meeting-room.png",
+    alt: "Construction planning meeting",
   },
-  {
-    src: "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=80",
-    alt: "Residential construction planning table with drawings",
+  about: {
+    src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
+    alt: "Professional project planning discussion",
   },
-];
-
-const commercialImages = [
-  {
-    src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
-    alt: "Commercial office fit-up interior",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-    alt: "Commercial building exterior and rollout style project",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
-    alt: "Commercial project planning meeting",
-  },
-];
+  residential: [
+    {
+      src: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      alt: "Modern residential renovation interior",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      alt: "Contemporary backyard suite exterior",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=80",
+      alt: "Residential construction planning table with drawings",
+    },
+  ],
+  commercial: [
+    {
+      src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+      alt: "Commercial office fit-up interior",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      alt: "Commercial building exterior and rollout style project",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+      alt: "Commercial project planning meeting",
+    },
+  ],
+};
 
 const pages = ["home", "residential", "commercial", "clarity", "about", "contact"] as const;
 type PageKey = (typeof pages)[number];
@@ -59,6 +73,7 @@ function NavLink({
   setActivePage: (page: PageKey) => void;
 }) {
   const active = activePage === page;
+
   return (
     <button
       onClick={() => setActivePage(page)}
@@ -73,6 +88,72 @@ function NavLink({
 
 function SectionShell({ children }: { children: React.ReactNode }) {
   return <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">{children}</div>;
+}
+
+function BaselineLogo() {
+  if (siteImages.logo.src) {
+    return (
+      <img
+        src={siteImages.logo.src}
+        alt={siteImages.logo.alt}
+        className="h-14 w-auto md:h-16"
+      />
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3 text-white">
+      <div className="rounded-xl border border-white/20 bg-white/5 p-2">
+        <Building2 className="h-8 w-8 md:h-10 md:w-10" />
+      </div>
+      <div>
+        <div className="text-2xl font-bold tracking-[0.18em] md:text-3xl">BASELINE</div>
+        <div className="text-[10px] uppercase tracking-[0.35em] text-stone-300 md:text-xs">
+          Group
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({
+  title,
+  price,
+  summary,
+  details,
+  accentClass,
+}: {
+  title: string;
+  price: string;
+  summary: string;
+  details: React.ReactNode;
+  accentClass: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="rounded-[1.5rem] border border-stone-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-start justify-between gap-4 text-left"
+      >
+        <div>
+          <div className="mb-2 text-xl font-semibold text-[#0F1E2F]">{title}</div>
+          <p className="mb-3 text-sm leading-6 text-stone-700">{summary}</p>
+          <div className={`text-sm font-semibold uppercase tracking-[0.18em] ${accentClass}`}>
+            {price}
+          </div>
+        </div>
+        <div className="mt-1 flex items-center gap-2 rounded-full border border-stone-300 px-3 py-1 text-xs font-medium text-stone-700">
+          {isOpen ? "Less" : "More"}
+          <ChevronDown className={`h-4 w-4 transition ${isOpen ? "rotate-180" : ""}`} />
+        </div>
+      </button>
+
+      {isOpen && <div className="mt-5 border-t border-stone-200 pt-5">{details}</div>}
+    </div>
+  );
 }
 
 function HomePage({
@@ -105,7 +186,8 @@ function HomePage({
               Construction advisory and representation focused on the owner’s interests.
             </h1>
             <p className="mb-8 max-w-xl text-lg leading-8 text-stone-200 md:text-xl">
-              We help owners plan, oversee, and deliver projects with clarity while protecting their interests every step of the way.
+              We help owners plan, oversee, and deliver projects with clarity while protecting
+              their interests every step of the way.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
@@ -127,8 +209,8 @@ function HomePage({
             <div className="grid w-full max-w-2xl gap-4 md:grid-cols-[1.15fr_0.85fr]">
               <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur">
                 <img
-                  src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80"
-                  alt="Construction planning and site oversight"
+                  src={siteImages.hero.src}
+                  alt={siteImages.hero.alt}
                   className="h-full min-h-[280px] w-full object-cover"
                 />
               </div>
@@ -139,11 +221,23 @@ function HomePage({
                   </div>
                   <div className="grid gap-3">
                     {[
-                      ["Clarity before commitment", "Define scope, identify risk, and create a practical next-step roadmap before construction begins."],
-                      ["Protection of the owner’s interests", "Independent guidance that helps owners stay aligned, informed, and protected through delivery."],
-                      ["Structured oversight", "Progress visibility, documentation, decision support, and clearer communication across the project."],
+                      [
+                        "Clarity before commitment",
+                        "Define scope, identify risk, and create a practical next-step roadmap before construction begins.",
+                      ],
+                      [
+                        "Protection of the owner’s interests",
+                        "Independent guidance that helps owners stay aligned, informed, and protected through delivery.",
+                      ],
+                      [
+                        "Structured oversight",
+                        "Progress visibility, documentation, decision support, and clearer communication across the project.",
+                      ],
                     ].map(([title, desc]) => (
-                      <div key={title} className="rounded-2xl border border-white/10 bg-[#0F1E2F]/30 p-4">
+                      <div
+                        key={title}
+                        className="rounded-2xl border border-white/10 bg-[#0F1E2F]/30 p-4"
+                      >
                         <div className="mb-1 text-base font-semibold text-white">{title}</div>
                         <div className="text-sm leading-6 text-stone-200">{desc}</div>
                       </div>
@@ -158,34 +252,51 @@ function HomePage({
 
       <SectionShell>
         <div className="mb-12 max-w-3xl">
-          <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">Who We Help</div>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-[#0F1E2F] md:text-4xl">Clarity, structure, and independent support before and during construction.</h2>
+          <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">
+            Choose Your Project Stream
+          </div>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-[#0F1E2F] md:text-4xl">
+            Residential and commercial projects, each with a clear service pathway.
+          </h2>
           <p className="text-lg leading-8 text-stone-700">
-            Baseline works with homeowners, investors, and private-sector commercial operators who need an independent advisor to help define scope, reduce risk, and bring better control to projects.
+            Baseline supports both residential and commercial clients, with service offerings
+            tailored to the type of project and the level of support needed.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="rounded-[1.75rem] border border-stone-200 bg-gradient-to-b from-[#EEF3F8] to-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-slate-900"><Home className="h-6 w-6 text-[#2E5C89]" /><div className="text-xl font-semibold">Residential</div></div>
+            <div className="mb-4 flex items-center gap-3 text-slate-900">
+              <Home className="h-6 w-6 text-[#2E5C89]" />
+              <div className="text-xl font-semibold">Residential Services</div>
+            </div>
             <p className="mb-4 text-sm leading-6 text-stone-700">
-              Renovations, repairs and remediation, backyard suites, multi-unit conversions, and new residential builds.
+              For homeowners and investors planning renovations, backyard suites, conversions,
+              remediation work, and new residential builds.
             </p>
-            <button onClick={() => goTo("residential")} className="inline-flex items-center gap-2 text-sm font-medium text-[#183551] underline underline-offset-4">Explore residential services <ArrowRight className="h-4 w-4" /></button>
+            <button
+              onClick={() => goTo("residential")}
+              className="inline-flex items-center gap-2 text-sm font-medium text-[#183551] underline underline-offset-4"
+            >
+              Explore residential services <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
+
           <div className="rounded-[1.75rem] border border-stone-200 bg-gradient-to-b from-[#F7F2E8] to-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-slate-900"><Building2 className="h-6 w-6 text-[#B08A4A]" /><div className="text-xl font-semibold">Commercial</div></div>
+            <div className="mb-4 flex items-center gap-3 text-slate-900">
+              <Building2 className="h-6 w-6 text-[#B08A4A]" />
+              <div className="text-xl font-semibold">Commercial Services</div>
+            </div>
             <p className="mb-4 text-sm leading-6 text-stone-700">
-              Capital projects, fit-ups, asset-related upgrades, and multi-site commercial rollouts for private-sector operators.
+              For private-sector owners and operators planning fit-ups, capital upgrades, asset
+              improvements, and rollout-style commercial work.
             </p>
-            <button onClick={() => goTo("commercial")} className="inline-flex items-center gap-2 text-sm font-medium text-[#6B5328] underline underline-offset-4">Explore commercial services <ArrowRight className="h-4 w-4" /></button>
-          </div>
-          <div className="rounded-[1.75rem] border border-stone-200 bg-gradient-to-b from-stone-100 to-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-slate-900"><ClipboardList className="h-6 w-6 text-stone-700" /><div className="text-xl font-semibold">Project Clarity</div></div>
-            <p className="mb-4 text-sm leading-6 text-stone-700">
-              Structured first-step sessions that help owners understand scope, risk, budget, and next steps before construction begins.
-            </p>
-            <button onClick={() => goTo("clarity")} className="inline-flex items-center gap-2 text-sm font-medium text-stone-900 underline underline-offset-4">Choose a clarity session <ArrowRight className="h-4 w-4" /></button>
+            <button
+              onClick={() => goTo("commercial")}
+              className="inline-flex items-center gap-2 text-sm font-medium text-[#6B5328] underline underline-offset-4"
+            >
+              Explore commercial services <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </SectionShell>
@@ -193,26 +304,46 @@ function HomePage({
   );
 }
 
-function ResidentialPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void; }) {
+function ResidentialPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void }) {
   return (
     <>
       <section className="border-b border-stone-200 bg-gradient-to-b from-[#EEF3F8] to-white">
         <SectionShell>
           <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#2E5C89]">Residential</div>
-              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">Residential construction advisory for homeowners and investors.</h1>
+              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#2E5C89]">
+                Residential
+              </div>
+              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">
+                Residential construction advisory for homeowners and investors.
+              </h1>
               <p className="mb-8 text-lg leading-8 text-stone-700">
-                Baseline supports residential owners planning renovations, backyard suites, multi-unit conversions, remediation work, and new builds with independent guidance focused on the owner’s interests.
+                Baseline supports residential owners planning renovations, backyard suites,
+                multi-unit conversions, remediation work, and new builds with independent guidance
+                focused on the owner’s interests.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <button onClick={() => goToContact("Residential")} className="rounded-2xl bg-[#2E5C89] px-6 py-3 text-sm font-medium text-white hover:bg-[#244A6F]">Book a Residential Clarity Session</button>
-                <button onClick={() => goToContact("Residential")} className="rounded-2xl border border-stone-300 px-6 py-3 text-sm font-medium text-stone-900 hover:bg-white">Discuss Your Project</button>
+                <button
+                  onClick={() => goToContact("Residential")}
+                  className="rounded-2xl bg-[#2E5C89] px-6 py-3 text-sm font-medium text-white hover:bg-[#244A6F]"
+                >
+                  Book a Residential Clarity Session
+                </button>
+                <button
+                  onClick={() => goToContact("Residential")}
+                  className="rounded-2xl border border-stone-300 px-6 py-3 text-sm font-medium text-stone-900 hover:bg-white"
+                >
+                  Discuss Your Project
+                </button>
               </div>
             </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
-              {residentialImages.map((image) => (
-                <div key={image.src} className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm">
+              {siteImages.residential.map((image) => (
+                <div
+                  key={image.src}
+                  className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm"
+                >
                   <img src={image.src} alt={image.alt} className="h-64 w-full object-cover" />
                 </div>
               ))}
@@ -224,28 +355,132 @@ function ResidentialPage({ goToContact }: { goToContact: (stream?: ProjectStream
       <SectionShell>
         <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr]">
           <div>
-            <div className="mb-5 text-2xl font-semibold text-[#0F1E2F]">What We Help With</div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Major renovations and additions",
-                "Repairs and remediation",
-                "Backyard suites and ADUs",
-                "Multi-unit conversions",
-                "New residential builds",
-                "Project clarity and owner’s representation",
-              ].map((item) => (
-                <div key={item} className="rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm text-stone-800 shadow-sm">
-                  {item}
-                </div>
-              ))}
+            <div className="mb-5 text-2xl font-semibold text-[#0F1E2F]">
+              Residential Service Pathway
+            </div>
+            <div className="grid gap-5">
+              <ServiceCard
+                title="1. Baseline Project Clarity Session"
+                summary="A structured first step to define scope, identify risks, and create a roadmap before moving forward."
+                price="Starting at $950"
+                accentClass="text-[#2E5C89]"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• 30-minute intake call before the meeting</li>
+                        <li>• Up to 90-minute consultation or site walkthrough</li>
+                        <li>• Feasibility and risk review</li>
+                        <li>• Budget and scope discussion</li>
+                        <li>• Written summary and action checklist</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">
+                        Best for
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Early-stage planning</li>
+                        <li>• Renovations and additions</li>
+                        <li>• Backyard suites and conversions</li>
+                        <li>• Owners who need direction before committing further</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
+
+              <ServiceCard
+                title="2. Baseline Advisory Retainer"
+                summary="Monthly support for owners who want continued guidance, review, structured communication, and project visibility as decisions continue."
+                price="Starting at $750/month"
+                accentClass="text-stone-700"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Monthly project review meeting</li>
+                        <li>• Additional check-in call as needed</li>
+                        <li>• Quote and scope review</li>
+                        <li>• Budget and change discussion</li>
+                        <li>• Organized files, updates, and follow-up notes</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What you gain
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Continued access to experienced guidance</li>
+                        <li>• Better decision support as the project evolves</li>
+                        <li>• More organized communication and documentation</li>
+                        <li>• Clearer visibility into current issues and next steps</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
+
+              <ServiceCard
+                title="3. Baseline Project Oversight"
+                summary="Higher-touch support for active residential projects that need stronger structure, recurring review, and better visibility during delivery."
+                price="Starting at $1,500/month"
+                accentClass="text-stone-700"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Recurring project meetings</li>
+                        <li>• Progress and issue review</li>
+                        <li>• Change discussion and owner-side support</li>
+                        <li>• Organized documentation and updates</li>
+                        <li>• Support through deficiencies and closeout</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        Best for
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Active renovations and additions</li>
+                        <li>• Backyard suites and new builds underway</li>
+                        <li>• Projects with multiple moving parts</li>
+                        <li>• Owners who want stronger involvement during delivery</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
             </div>
           </div>
+
           <div className="rounded-[1.75rem] border border-stone-200 bg-white p-8 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-lg font-semibold text-[#0F1E2F]"><ImageIcon className="h-5 w-5 text-[#2E5C89]" />How Baseline Helps</div>
+            <div className="mb-4 flex items-center gap-3 text-lg font-semibold text-[#0F1E2F]">
+              <ImageIcon className="h-5 w-5 text-[#2E5C89]" />
+              How Baseline Helps
+            </div>
             <ul className="space-y-4 text-sm leading-6 text-stone-700">
-              <li><span className="font-semibold text-stone-900">Project planning:</span> early feasibility, scope review, and budget discussion before commitments are made.</li>
-              <li><span className="font-semibold text-stone-900">Contractor review:</span> quote evaluation, scope gap identification, and owner-side decision support.</li>
-              <li><span className="font-semibold text-stone-900">Delivery oversight:</span> progress tracking, documentation, and structured communication during the project.</li>
+              <li>
+                <span className="font-semibold text-stone-900">Project planning:</span> early
+                feasibility, scope review, and budget discussion before commitments are made.
+              </li>
+              <li>
+                <span className="font-semibold text-stone-900">Contractor review:</span> quote
+                evaluation, scope gap identification, and owner-side decision support.
+              </li>
+              <li>
+                <span className="font-semibold text-stone-900">Delivery support:</span> structured
+                communication, documentation, and ongoing guidance as the project moves forward.
+              </li>
             </ul>
           </div>
         </div>
@@ -254,26 +489,46 @@ function ResidentialPage({ goToContact }: { goToContact: (stream?: ProjectStream
   );
 }
 
-function CommercialPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void; }) {
+function CommercialPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void }) {
   return (
     <>
       <section className="border-b border-stone-200 bg-gradient-to-b from-[#F7F2E8] to-white">
         <SectionShell>
           <div className="grid gap-10 md:grid-cols-[1.02fr_0.98fr]">
             <div>
-              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">Commercial</div>
-              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">Commercial construction advisory for private-sector capital projects and rollouts.</h1>
+              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">
+                Commercial
+              </div>
+              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">
+                Commercial construction advisory for private-sector capital projects and rollouts.
+              </h1>
               <p className="mb-8 text-lg leading-8 text-stone-700">
-                Baseline works with owners and operators planning fit-ups, upgrades, capital work, and multi-site rollout programs who need better project control, clearer reporting, and an independent advocate focused on the owner’s interests.
+                Baseline works with owners and operators planning fit-ups, upgrades, capital work,
+                and multi-site rollout programs who need better project control, clearer reporting,
+                and an independent advocate focused on the owner’s interests.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <button onClick={() => goToContact("Commercial")} className="rounded-2xl bg-[#B08A4A] px-6 py-3 text-sm font-medium text-white hover:bg-[#9C7840]">Book a Commercial Clarity Session</button>
-                <button onClick={() => goToContact("Commercial")} className="rounded-2xl border border-stone-300 px-6 py-3 text-sm font-medium text-stone-900 hover:bg-white">Discuss Your Project</button>
+                <button
+                  onClick={() => goToContact("Commercial")}
+                  className="rounded-2xl bg-[#B08A4A] px-6 py-3 text-sm font-medium text-white hover:bg-[#9C7840]"
+                >
+                  Book a Commercial Clarity Session
+                </button>
+                <button
+                  onClick={() => goToContact("Commercial")}
+                  className="rounded-2xl border border-stone-300 px-6 py-3 text-sm font-medium text-stone-900 hover:bg-white"
+                >
+                  Discuss Your Project
+                </button>
               </div>
             </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
-              {commercialImages.map((image) => (
-                <div key={image.src} className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm">
+              {siteImages.commercial.map((image) => (
+                <div
+                  key={image.src}
+                  className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm"
+                >
                   <img src={image.src} alt={image.alt} className="h-64 w-full object-cover" />
                 </div>
               ))}
@@ -285,29 +540,136 @@ function CommercialPage({ goToContact }: { goToContact: (stream?: ProjectStream)
       <SectionShell>
         <div className="grid gap-10 md:grid-cols-[1.02fr_0.98fr]">
           <div>
-            <div className="mb-5 text-2xl font-semibold text-[#0F1E2F]">What We Help With</div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Capital projects and asset upgrades",
-                "Commercial fit-ups and tenant improvements",
-                "Multi-site commercial rollouts",
-                "Budget and scope oversight",
-                "Reporting and progress visibility",
-                "Owner-focused coordination support",
-              ].map((item) => (
-                <div key={item} className="rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm text-stone-800 shadow-sm">
-                  {item}
-                </div>
-              ))}
+            <div className="mb-5 text-2xl font-semibold text-[#0F1E2F]">
+              Commercial Service Pathway
+            </div>
+            <div className="grid gap-5">
+              <ServiceCard
+                title="1. Baseline Project Clarity Session"
+                summary="A focused first step to review scope, delivery risk, budget expectations, and next-step planning before committing further."
+                price="Starting at $1,500"
+                accentClass="text-[#B08A4A]"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• 30-minute intake call before the meeting</li>
+                        <li>• Up to 90-minute project review meeting</li>
+                        <li>• Scope, risk, and delivery analysis</li>
+                        <li>• Budget and procurement discussion</li>
+                        <li>• Written summary and next-step roadmap</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">
+                        Best for
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Commercial fit-ups and upgrades</li>
+                        <li>• Capital projects before contractor engagement</li>
+                        <li>• Owners who need better scope clarity</li>
+                        <li>• Projects where delivery risk needs to be understood early</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
+
+              <ServiceCard
+                title="2. Baseline Advisory Retainer"
+                summary="Monthly advisory support for operators who want continued review, clearer communication, structured tracking, and stronger decision support."
+                price="Starting at $1,250/month"
+                accentClass="text-stone-700"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Monthly project review meeting</li>
+                        <li>• Additional check-in support as needed</li>
+                        <li>• Proposal and scope review</li>
+                        <li>• Budget and change discussion</li>
+                        <li>• Organized updates, files, and follow-up notes</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What you gain
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Better visibility into current status and decisions</li>
+                        <li>• Stronger owner-side support without full oversight</li>
+                        <li>• More organized communication and tracking</li>
+                        <li>• A practical structure as the project moves forward</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
+
+              <ServiceCard
+                title="3. Baseline Project Oversight"
+                summary="Higher-touch involvement for active commercial projects that need recurring review, stronger coordination support, and better visibility through delivery."
+                price="Starting at $2,500/month"
+                accentClass="text-stone-700"
+                details={
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        What’s included
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Recurring project meetings</li>
+                        <li>• Progress and issue review</li>
+                        <li>• Contractor communication support</li>
+                        <li>• Change-order and decision support</li>
+                        <li>• Structured updates, documentation, and reporting</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-stone-700">
+                        Best for
+                      </div>
+                      <ul className="space-y-2 text-sm leading-6 text-stone-700">
+                        <li>• Active fit-ups and capital projects</li>
+                        <li>• Rollout-style or multi-stakeholder work</li>
+                        <li>• Projects with frequent decisions and coordination needs</li>
+                        <li>• Owners who want stronger visibility during delivery</li>
+                      </ul>
+                    </div>
+                  </div>
+                }
+              />
             </div>
           </div>
+
           <div className="rounded-[1.75rem] border border-stone-200 bg-[#13283D] p-8 text-white shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-lg font-semibold"><HardHat className="h-5 w-5 text-[#D5B170]" />Why Commercial Clients Choose Baseline</div>
+            <div className="mb-4 flex items-center gap-3 text-lg font-semibold">
+              <HardHat className="h-5 w-5 text-[#D5B170]" />
+              Why Commercial Clients Choose Baseline
+            </div>
             <ul className="space-y-4 text-sm leading-6 text-stone-200">
-              <li><span className="font-semibold text-white">Owner-focused:</span> independent from the build contract and focused on the client’s interests.</li>
-              <li><span className="font-semibold text-white">Rollout discipline:</span> consistency, visibility, and repeatable reporting across locations.</li>
-              <li><span className="font-semibold text-white">Structured delivery:</span> better visibility into cost, schedule, communication, and project decision-making.</li>
-              <li><span className="font-semibold text-white">Practical construction fluency:</span> real understanding of how projects are priced, sequenced, and delivered.</li>
+              <li>
+                <span className="font-semibold text-white">Owner-focused:</span> independent from
+                the build contract and focused on the client’s interests.
+              </li>
+              <li>
+                <span className="font-semibold text-white">Rollout discipline:</span> consistency,
+                visibility, and repeatable reporting across locations.
+              </li>
+              <li>
+                <span className="font-semibold text-white">Structured delivery:</span> better
+                visibility into cost, schedule, communication, and project decision-making.
+              </li>
+              <li>
+                <span className="font-semibold text-white">Practical construction fluency:</span>{" "}
+                real understanding of how projects are priced, sequenced, and delivered.
+              </li>
             </ul>
           </div>
         </div>
@@ -316,27 +678,37 @@ function CommercialPage({ goToContact }: { goToContact: (stream?: ProjectStream)
   );
 }
 
-function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void; }) {
+function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) => void }) {
   return (
     <>
       <section className="border-b border-stone-200 bg-gradient-to-b from-white to-stone-50">
         <SectionShell>
           <div className="mb-12 max-w-3xl">
-            <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">Project Clarity Sessions</div>
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">Choose the Clarity Session that fits your project.</h1>
+            <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">
+              Project Clarity Sessions
+            </div>
+            <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">
+              Choose the Clarity Session that fits your project.
+            </h1>
             <p className="text-lg leading-8 text-stone-700">
-              Baseline offers tailored Project Clarity pathways for residential owners and commercial operators who need a stronger foundation before construction begins.
+              Baseline offers tailored Project Clarity pathways for residential owners and
+              commercial operators who need a stronger foundation before construction begins.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-[1.75rem] border border-[#B8CCDF] bg-gradient-to-b from-[#EEF3F8] to-white p-8 shadow-sm">
-              <div className="mb-3 text-2xl font-semibold text-[#0F1E2F]">Residential Project Clarity Session</div>
+              <div className="mb-3 text-2xl font-semibold text-[#0F1E2F]">
+                Residential Project Clarity Session
+              </div>
               <p className="mb-5 text-sm leading-6 text-stone-700">
-                A structured first step for homeowners and investors planning renovations, backyard suites, multi-unit conversions, remediation projects, or new builds.
+                A structured first step for homeowners and investors planning renovations, backyard
+                suites, multi-unit conversions, remediation projects, or new builds.
               </p>
               <div className="mb-5 rounded-2xl border border-stone-200 bg-white p-5">
-                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">What’s included</div>
+                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">
+                  What’s included
+                </div>
                 <ul className="space-y-2 text-sm leading-6 text-stone-700">
                   <li>• 30-minute intake call before the meeting</li>
                   <li>• Up to 90-minute consultation / site walkthrough</li>
@@ -346,7 +718,9 @@ function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) =>
                 </ul>
               </div>
               <div className="mb-5 rounded-2xl border border-stone-200 bg-white p-5">
-                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">What you take away</div>
+                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#2E5C89]">
+                  What you take away
+                </div>
                 <ul className="space-y-2 text-sm leading-6 text-stone-700">
                   <li>• Clearer understanding of the project scope</li>
                   <li>• Early visibility into likely risks and unknowns</li>
@@ -354,17 +728,29 @@ function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) =>
                   <li>• A practical roadmap to move the project forward</li>
                 </ul>
               </div>
-              <div className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#2E5C89]">Starting at $950</div>
-              <button onClick={() => goToContact("Residential")} className="inline-flex rounded-2xl bg-[#2E5C89] px-5 py-3 text-sm font-medium text-white hover:bg-[#244A6F]">Book a Residential Clarity Session</button>
+              <div className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#2E5C89]">
+                Starting at $950
+              </div>
+              <button
+                onClick={() => goToContact("Residential")}
+                className="inline-flex rounded-2xl bg-[#2E5C89] px-5 py-3 text-sm font-medium text-white hover:bg-[#244A6F]"
+              >
+                Book a Residential Clarity Session
+              </button>
             </div>
 
             <div className="rounded-[1.75rem] border border-[#D9C29A] bg-gradient-to-b from-[#F7F2E8] to-white p-8 shadow-sm">
-              <div className="mb-3 text-2xl font-semibold text-[#0F1E2F]">Commercial Project Clarity Session</div>
+              <div className="mb-3 text-2xl font-semibold text-[#0F1E2F]">
+                Commercial Project Clarity Session
+              </div>
               <p className="mb-5 text-sm leading-6 text-stone-700">
-                A structured first step for operators planning fit-ups, capital upgrades, asset improvements, or multi-site rollout programs.
+                A structured first step for operators planning fit-ups, capital upgrades, asset
+                improvements, or multi-site rollout programs.
               </p>
               <div className="mb-5 rounded-2xl border border-stone-200 bg-white p-5">
-                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">What’s included</div>
+                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">
+                  What’s included
+                </div>
                 <ul className="space-y-2 text-sm leading-6 text-stone-700">
                   <li>• 30-minute intake call before the meeting</li>
                   <li>• Up to 90-minute consultation / project review meeting</li>
@@ -374,7 +760,9 @@ function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) =>
                 </ul>
               </div>
               <div className="mb-5 rounded-2xl border border-stone-200 bg-white p-5">
-                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">What you take away</div>
+                <div className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#B08A4A]">
+                  What you take away
+                </div>
                 <ul className="space-y-2 text-sm leading-6 text-stone-700">
                   <li>• Clearer project definition and priorities</li>
                   <li>• Better visibility into cost drivers and risk areas</li>
@@ -382,8 +770,15 @@ function ClarityPage({ goToContact }: { goToContact: (stream?: ProjectStream) =>
                   <li>• A practical framework to move the project ahead</li>
                 </ul>
               </div>
-              <div className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#B08A4A]">Starting at $1,500</div>
-              <button onClick={() => goToContact("Commercial")} className="inline-flex rounded-2xl bg-[#B08A4A] px-5 py-3 text-sm font-medium text-white hover:bg-[#9C7840]">Book a Commercial Clarity Session</button>
+              <div className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#B08A4A]">
+                Starting at $1,500
+              </div>
+              <button
+                onClick={() => goToContact("Commercial")}
+                className="inline-flex rounded-2xl bg-[#B08A4A] px-5 py-3 text-sm font-medium text-white hover:bg-[#9C7840]"
+              >
+                Book a Commercial Clarity Session
+              </button>
             </div>
           </div>
         </SectionShell>
@@ -399,17 +794,27 @@ function AboutPage() {
         <SectionShell>
           <div className="grid gap-10 md:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">About Baseline</div>
-              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">Independent construction advisory built around clarity, structure, and practical experience.</h1>
+              <div className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#B08A4A]">
+                About Baseline
+              </div>
+              <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#0F1E2F] md:text-5xl">
+                Independent construction advisory built around clarity, structure, and practical
+                experience.
+              </h1>
               <p className="mb-6 text-lg leading-8 text-stone-700">
-                Baseline helps residential owners, investors, and private-sector commercial clients move projects forward with clearer planning, better oversight, and a stronger understanding of risk before and during construction.
+                Baseline helps residential owners, investors, and private-sector commercial clients
+                move projects forward with clearer planning, better oversight, and a stronger
+                understanding of risk before and during construction.
               </p>
-              <div className="flex items-center gap-3 text-stone-700"><MapPin className="h-5 w-5 text-[#2E5C89]" />Halifax, Nova Scotia</div>
+              <div className="flex items-center gap-3 text-stone-700">
+                <MapPin className="h-5 w-5 text-[#2E5C89]" />
+                Halifax, Nova Scotia
+              </div>
             </div>
             <div className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm">
               <img
-                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80"
-                alt="Professional project planning discussion"
+                src={siteImages.about.src}
+                alt={siteImages.about.alt}
                 className="h-full min-h-[320px] w-full object-cover"
               />
             </div>
@@ -420,21 +825,39 @@ function AboutPage() {
       <SectionShell>
         <div className="grid gap-8 md:grid-cols-3">
           <div className="rounded-[1.75rem] border border-stone-200 bg-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]"><User className="h-5 w-5 text-[#B08A4A]" /><div className="text-xl font-semibold">Who We Are</div></div>
+            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]">
+              <User className="h-5 w-5 text-[#B08A4A]" />
+              <div className="text-xl font-semibold">Who We Are</div>
+            </div>
             <p className="text-sm leading-6 text-stone-700">
-              Baseline is a construction advisory business focused on helping owners make better decisions before and during project delivery. The emphasis is on independent guidance, clear communication, and practical oversight.
+              Baseline is a construction advisory business focused on helping owners make better
+              decisions before and during project delivery. The emphasis is on independent
+              guidance, clear communication, and practical oversight.
             </p>
           </div>
+
           <div className="rounded-[1.75rem] border border-stone-200 bg-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]"><ClipboardList className="h-5 w-5 text-[#2E5C89]" /><div className="text-xl font-semibold">Past Experience</div></div>
+            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]">
+              <ClipboardList className="h-5 w-5 text-[#2E5C89]" />
+              <div className="text-xl font-semibold">Past Experience</div>
+            </div>
             <p className="text-sm leading-6 text-stone-700">
-              Baseline brings experience across project coordination, contractor engagement, owner representation, infrastructure-related business development, and property-focused project planning — with a practical understanding of how projects are priced, sequenced, and delivered.
+              Baseline brings experience across project coordination, contractor engagement, owner
+              representation, infrastructure-related business development, and property-focused
+              project planning — with a practical understanding of how projects are priced,
+              sequenced, and delivered.
             </p>
           </div>
+
           <div className="rounded-[1.75rem] border border-stone-200 bg-white p-7 shadow-sm">
-            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]"><Building2 className="h-5 w-5 text-[#B08A4A]" /><div className="text-xl font-semibold">Where We Work</div></div>
+            <div className="mb-4 flex items-center gap-3 text-[#0F1E2F]">
+              <Building2 className="h-5 w-5 text-[#B08A4A]" />
+              <div className="text-xl font-semibold">Where We Work</div>
+            </div>
             <p className="text-sm leading-6 text-stone-700">
-              Based in Halifax, Nova Scotia, Baseline supports residential projects and private-sector commercial work with the ability to grow into broader project oversight and rollout support over time.
+              Based in Halifax, Nova Scotia, Baseline supports residential projects and
+              private-sector commercial work with the ability to grow into broader project
+              oversight and rollout support over time.
             </p>
           </div>
         </div>
@@ -473,9 +896,15 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
           </p>
           <div className="overflow-hidden rounded-[1.75rem] border border-stone-200 bg-[#13283D] p-8 text-white shadow-sm">
             <div className="space-y-3 text-sm text-stone-200">
-              <div><span className="font-semibold text-white">Email:</span> info@baselinegroup.ca</div>
-              <div><span className="font-semibold text-white">Phone:</span> 902-414-5737</div>
-              <div><span className="font-semibold text-white">Website:</span> baselinegroup.ca</div>
+              <div>
+                <span className="font-semibold text-white">Email:</span> info@baselinegroup.ca
+              </div>
+              <div>
+                <span className="font-semibold text-white">Phone:</span> 902-414-5737
+              </div>
+              <div>
+                <span className="font-semibold text-white">Website:</span> baselinegroup.ca
+              </div>
             </div>
           </div>
         </div>
@@ -487,13 +916,7 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
         >
           <div style={{ display: "none" }}>
             <label htmlFor="_gotcha">Leave this field empty</label>
-            <input
-              type="text"
-              name="_gotcha"
-              id="_gotcha"
-              tabIndex={-1}
-              autoComplete="off"
-            />
+            <input type="text" name="_gotcha" id="_gotcha" tabIndex={-1} autoComplete="off" />
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
@@ -610,35 +1033,26 @@ function ContactPage({ defaultStream = "Residential" }: { defaultStream?: Projec
   );
 }
 
-function BaselineLogo() {
-  return (
-    <img
-      src="/assets/logo-dark.png"
-      alt="Baseline logo"
-      className="h-20 w-auto md:h-28"
-    />
-  );
-}
-
 export default function App() {
   const [activePage, setActivePage] = useState<PageKey>(() => {
     const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
     return pages.includes(hash as PageKey) ? (hash as PageKey) : "home";
   });
+
   const [contactStream, setContactStream] = useState<ProjectStream>("Residential");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const goTo = (page: PageKey) => {
-  setActivePage(page);
-  setMobileMenuOpen(false);
-  window.history.pushState({ page }, "", `#${page}`);
+    setActivePage(page);
+    setMobileMenuOpen(false);
+    window.history.pushState({ page }, "", `#${page}`);
   };
 
   const goToContact = (stream: ProjectStream = "Residential") => {
-  setContactStream(stream);
-  setActivePage("contact");
-  setMobileMenuOpen(false);
-  window.history.pushState({ page: "contact", stream }, "", "#contact");
+    setContactStream(stream);
+    setActivePage("contact");
+    setMobileMenuOpen(false);
+    window.history.pushState({ page: "contact", stream }, "", "#contact");
   };
 
   useEffect(() => {
@@ -678,76 +1092,98 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0F1E2F] text-slate-900">
-     <header className="sticky top-0 z-50 border-b border-[#1F334A] bg-[#0F1E2F]/95 backdrop-blur">
-  <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-    <button onClick={() => goTo("home")} className="flex items-center gap-3 text-left">
-      <BaselineLogo />
-    </button>
+      <header className="sticky top-0 z-50 border-b border-[#1F334A] bg-[#0F1E2F]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <button onClick={() => goTo("home")} className="flex items-center gap-3 text-left">
+            <BaselineLogo />
+          </button>
 
-    <nav className="hidden gap-2 md:flex">
-      <NavLink label="Home" page="home" activePage={activePage} setActivePage={goTo} />
-      <NavLink label="Residential" page="residential" activePage={activePage} setActivePage={goTo} />
-      <NavLink label="Commercial" page="commercial" activePage={activePage} setActivePage={goTo} />
-      <NavLink label="Start Here" page="clarity" activePage={activePage} setActivePage={goTo} />
-      <NavLink label="About" page="about" activePage={activePage} setActivePage={goTo} />
-      <NavLink label="Contact" page="contact" activePage={activePage} setActivePage={goTo} />
-    </nav>
+          <nav className="hidden gap-2 md:flex">
+            <NavLink label="Home" page="home" activePage={activePage} setActivePage={goTo} />
+            <NavLink
+              label="Residential"
+              page="residential"
+              activePage={activePage}
+              setActivePage={goTo}
+            />
+            <NavLink
+              label="Commercial"
+              page="commercial"
+              activePage={activePage}
+              setActivePage={goTo}
+            />
+            <NavLink
+              label="Start Here"
+              page="clarity"
+              activePage={activePage}
+              setActivePage={goTo}
+            />
+            <NavLink label="About" page="about" activePage={activePage} setActivePage={goTo} />
+            <NavLink
+              label="Contact"
+              page="contact"
+              activePage={activePage}
+              setActivePage={goTo}
+            />
+          </nav>
 
-    <button
-      className="rounded-xl border border-white/10 p-2 text-white md:hidden"
-      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      aria-label="Toggle menu"
-    >
-      {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-    </button>
-  </div>
+          <button
+            className="rounded-xl border border-white/10 p-2 text-white md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
 
-  {mobileMenuOpen && (
-    <div className="border-t border-[#1F334A] bg-[#0F1E2F] px-6 pb-4 pt-4 md:hidden">
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={() => goTo("home")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          Home
-        </button>
-        <button
-          onClick={() => goTo("residential")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          Residential
-        </button>
-        <button
-          onClick={() => goTo("commercial")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          Commercial
-        </button>
-        <button
-          onClick={() => goTo("clarity")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          Start Here
-        </button>
-        <button
-          onClick={() => goTo("about")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          About
-        </button>
-        <button
-          onClick={() => goTo("contact")}
-          className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
-        >
-          Contact
-        </button>
-      </div>
-    </div>
-  )}
-</header>
+        {mobileMenuOpen && (
+          <div className="border-t border-[#1F334A] bg-[#0F1E2F] px-6 pb-4 pt-4 md:hidden">
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => goTo("home")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => goTo("residential")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                Residential
+              </button>
+              <button
+                onClick={() => goTo("commercial")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                Commercial
+              </button>
+              <button
+                onClick={() => goTo("clarity")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                Start Here
+              </button>
+              <button
+                onClick={() => goTo("about")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                About
+              </button>
+              <button
+                onClick={() => goTo("contact")}
+                className="rounded-xl px-4 py-3 text-left text-white hover:bg-white/10"
+              >
+                Contact
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
 
       <div className="border-b border-stone-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-4 text-sm text-stone-500">Baseline / {pageTitle}</div>
+        <div className="mx-auto max-w-7xl px-6 py-4 text-sm text-stone-500">
+          Baseline / {pageTitle}
+        </div>
       </div>
 
       <main className="bg-white">
