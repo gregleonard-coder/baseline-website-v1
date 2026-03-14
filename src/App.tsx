@@ -33,8 +33,8 @@ const siteImages = {
       alt: "Blueprint",
     },
     {
-      src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
-      alt: "Contemporary backyard suite exterior",
+      src: "/assets/backyard-renovation.JPEG",
+      alt: "Backyard renovation",
     },
     {
       src: "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=80",
