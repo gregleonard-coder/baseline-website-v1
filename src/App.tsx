@@ -56,7 +56,7 @@ const siteImages: [
       alt: "Commercial project planning meeting",
     },
   ],
-]
+
 const pages = ["home", "residential", "commercial", "clarity", "about", "contact"] as const;
 type PageKey = (typeof pages)[number];
 type ProjectStream = "Residential" | "Commercial";
