@@ -37,8 +37,12 @@ const siteImages = {
       alt: "Backyard renovation",
     },
     {
-      src: "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=80",
-      alt: "Residential construction planning table with drawings",
+      src: "/assets/construction-site.png",
+      alt: "Construction site",
+    },
+    {
+      src: "/assets/cad-design.png",
+      alt: "CAD design",
     },
   ],
   commercial: [
