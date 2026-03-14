@@ -29,7 +29,7 @@ const siteImages = {
   },
   residential: [
     {
-      src: "https://unsplash.com/photos/white-printer-paper-beside-pen-and-pen-0w1MiTY78h0?auto=format&fit=crop&w=1200&q=80",
+      src: "https://unsplash.com/photos/white-printer-paper-beside-pen-and-pen-0w1MiTY78h0",
       alt: "Modern residential renovation interior",
     },
     {
