@@ -20,8 +20,8 @@ const siteImages = {
     alt: "Baseline Group logo",
   },
   hero: {
-    src: "/Images/meeting-room.png",
-    alt: "Construction planning meeting",
+    src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80"
+    alt: "Construction planning and site oversight"
   },
   about: {
     src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80",
